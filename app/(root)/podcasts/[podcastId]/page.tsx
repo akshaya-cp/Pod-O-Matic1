@@ -39,11 +39,13 @@ export default function PodcastDetails({
           <h2 className="text-white-1 text-16 font-bold ">{podcast?.views}</h2>
         </figure>
       </header>
-      <PodcastDetailsPlayer
+      
+      <PodcastDetailsPlayer  
         isOwner={isOwner}
-        podcastId={podcast._id}
+        podcastId={podcast._id} 
         {...podcast}
       />
+
       <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
         {podcast?.description}
       </p>

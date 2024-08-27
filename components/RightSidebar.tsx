@@ -18,7 +18,7 @@ const RightSidebar = () => {
   if (!topPodcasters) return <LoaderSpinner />;
   return (
     <section className="right_sidebar text-white-1">
-      <SignedIn>
+      <SignedIn>{/*  This Functionality is coming from Clerk */}
         <Link href={`/profile/${user?.id}`} className="flex gap-3 pb-12">
           <UserButton />
           <div className="flex w-full items-center justify-between">
@@ -53,15 +53,18 @@ const RightSidebar = () => {
                   alt={item.name}
                   width={44}
                   height={44}
-                  className="aspect-square rounded-full"
+                  className="aspect-square rounded-lg"
                 />
                 <h2 className="text-14 font-semibold text-white-1">
                   {item.name}
                 </h2>
               </figure>
-              <p className="text-14 font-normal text-white-2">
-                {item.totalPodcasts} podcast{item.totalPodcasts > 1 ? "s" : ""}
-              </p>
+              <div className="flex items-center">
+                <p className="text-12 font-normal text-white-2 truncate">
+                  {item.totalPodcasts} podcast{item.totalPodcasts > 1 ? "s" : ""}
+                </p>
+              </div>
+              
             </div>
           ))}
         </div>

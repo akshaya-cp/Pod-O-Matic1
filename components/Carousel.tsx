@@ -19,7 +19,8 @@ const EmblaCarousel = ({ fansLikeDetails }: CarouselProps) => {
 
   const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
     const autoplay = emblaApi?.plugins()?.autoplay;
-    if (!autoplay) return;
+    if (!autoplay || !("stopOnInteraction" in autoplay.options)) return
+
 
     const resetOrStop =
       autoplay.options.stopOnInteraction === false
