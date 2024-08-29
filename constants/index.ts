@@ -1,3 +1,5 @@
+import { VoiceType } from "@/types";
+
 export const sidebarLinks = [
   {
     imgURL: "/icons/home.svg",
@@ -16,48 +18,16 @@ export const sidebarLinks = [
   },
 ];
 
-export const voiceDetails = [
+export const voiceDetails: VoiceType[] = [
   {
-    id: 1,
-    name: "alloy",
+    provider: "Unreal Speech",
+    voices: ["Scarlett", "Dan"],
   },
   {
-    id: 2,
-    name: "echo",
+    provider: "Eleven Labs",
+    voices: ["Rachel", "Drew",],
   },
-  {
-    id: 3,
-    name: "fable",
-  },
-  {
-    id: 4,
-    name: "onyx",
-  },
-  {
-    id: 5,
-    name: "nova",
-  },
-  {
-    id: 6,
-    name: "shimmer",
-  },
-  {
-    id: 7,
-    name: "Rachel",
-  },
-  {
-    id: 8,
-    name: "Bella",
-  },
-  {
-    id: 9,
-    name: "Scarlett",
-  },
-  {
-    id: 10,
-    name: "Dan",
-  },
-];
+]
 
 export const podcastData = [
   {

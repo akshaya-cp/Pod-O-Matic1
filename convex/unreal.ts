@@ -3,7 +3,7 @@ import { action } from "@/convex/_generated/server";
 import { v } from "convex/values";
 import UnrealSpeech from "unrealspeech";
 
-const unrealSpeech = new UnrealSpeech(process.env.UNREAL_SPEECH_API_KEY!);
+const unrealSpeech = new UnrealSpeech(process.env.UNREALSPEECH_API_KEY!);
 
 export const generateAudioAction = action({
   args: {

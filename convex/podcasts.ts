@@ -1,5 +1,5 @@
-import { mutation, query } from "./_generated/server";
-// import { getTopUserByPodcastCount } from "@/convex/users";
+import { mutation, query } from "@/convex/_generated/server";
+
 import { ConvexError, v } from "convex/values";
 
 export const getUrl = mutation({
@@ -54,6 +54,54 @@ export const getTrendingPodcasts = query({
   },
 });
 
+export const getPodcastByAuthorId = query({
+  args: {
+    authorId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const podcasts = await ctx.db
+      .query("podcasts")
+      .filter((q) => q.eq(q.field("authorId"), args.authorId))
+      .collect();
+
+    const totalListeners = podcasts.reduce(
+      (sum, podcast) => sum + podcast.views,
+      0
+    );
+
+    return { podcasts, listeners: totalListeners };
+  },
+});
+
+export const getPodcastBySearch = query({
+  args: {
+    query: v.string(),
+  },
+  handler: async (ctx, { query }) => {
+    if (query === "") {
+      return await ctx.db.query("podcasts").order('desc').collect();
+    }
+    const authorSearch =
+      await ctx.db.query("podcasts").withSearchIndex("by_author", q => q.search("author", query)).take(10);
+    if (authorSearch.length > 0) {
+      return authorSearch;
+    }
+
+    const titleSearch = await ctx.db
+      .query("podcasts")
+      .withSearchIndex("by_title", q => q.search("title", query))
+      .take(10);
+    if (titleSearch.length > 0) {
+      return titleSearch;
+    }
+
+    return await ctx.db
+      .query("podcasts")
+      .withSearchIndex("by_description", q => q.search("description" || "title", query))
+      .take(10);
+  },
+});
+
 export const getPodcastbyId = query({
   args: {
     podcastId: v.id("podcasts"),
@@ -63,45 +111,6 @@ export const getPodcastbyId = query({
       .query("podcasts")
       .filter((q) => q.eq(q.field("_id"), podcastId))
       .first();
-  },
-});
-
-// this query will get the podcast by the search query.
-export const getPodcastBySearch = query({
-  args: {
-    search: v.string(),
-  },
-  handler: async (ctx, args) => {
-    if (args.search === "") {
-      return await ctx.db.query("podcasts").order("desc").collect();
-    }
-
-    const authorSearch = await ctx.db
-      .query("podcasts")
-      .withSearchIndex("by_author", (q) => q.search("author", args.search))
-      .take(10);
-
-    if (authorSearch.length > 0) {
-      return authorSearch;
-    }
-
-    const titleSearch = await ctx.db
-      .query("podcasts")
-      .withSearchIndex("by_title", (q) =>
-        q.search("title", args.search)
-      )
-      .take(10);
-
-    if (titleSearch.length > 0) {
-      return titleSearch;
-    }
-
-    return await ctx.db
-      .query("podcasts")
-      .withSearchIndex("by_description", (q) =>
-        q.search("description" || "title", args.search)
-      )
-      .take(10);
   },
 });
 
@@ -123,50 +132,6 @@ export const getPodcastsByVoiceType = query({
         )
       )
       .collect();
-  },
-});
-
-export const getAllPodcasts = query({
-  handler: async (ctx) => {
-    return await ctx.db.query("podcasts").order("desc").collect();
-  },
-});
-
-// this query will get the podcast by the authorId.
-export const getPodcastByAuthorId = query({
-  args: {
-    authorId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const podcasts = await ctx.db
-      .query("podcasts")
-      .filter((q) => q.eq(q.field("authorId"), args.authorId))
-      .collect();
-
-    const totalListeners = podcasts.reduce(
-      (sum, podcast) => sum + podcast.views,
-      0
-    );
-
-    return { podcasts, listeners: totalListeners };
-  },
-});
-
-// this mutation will update the views of the podcast.
-export const updatePodcastViews = mutation({
-  args: {
-    podcastId: v.id("podcasts"),
-  },
-  handler: async (ctx, args) => {
-    const podcast = await ctx.db.get(args.podcastId);
-
-    if (!podcast) {
-      throw new ConvexError("Podcast not found");
-    }
-
-    return await ctx.db.patch(args.podcastId, {
-      views: podcast.views + 1,
-    });
   },
 });
 

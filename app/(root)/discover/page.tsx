@@ -1,44 +1,48 @@
-"use client"
+"use client";
 
-import EmptyState from '@/components/EmptyState'
-import LoaderSpinner from '@/components/LoaderSpinner'
-import PodcastCard from '@/components/PodcastCard'
-import Searchbar from '@/components/Searchbar'
-import { api } from '@/convex/_generated/api'
-import { useQuery } from 'convex/react'
-import React from 'react'
+import EmptyState from "@/components/EmptyState";
+import PodcastCard from "@/components/PodcastCard";
+import SearchBar from "@/components/Searchbar";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 
-const Discover = ({ searchParams: { search} }: { searchParams : { search: string }}) => {
-  const podcastsData = useQuery(api.podcasts.getPodcastBySearch, { search: search || '' })
+const Discover = ({
+  searchParams: { search },
+}: {
+  searchParams: { search?: string };
+}) => {
+  const podcasts = useQuery(api.podcasts.getPodcastBySearch, {
+    query: search || "",
+  });
 
   return (
     <div className="flex flex-col gap-9">
-      <Searchbar />
+      <SearchBar />
       <div className="flex flex-col gap-9">
         <h1 className="text-20 font-bold text-white-1">
-          {!search ? 'Discover Trending Podcasts' : 'Search results for '}
+          {!search ? "Discover Trending Podcasts" : "Search results for "}
           {search && <span className="text-white-2">{search}</span>}
         </h1>
-        {podcastsData ? (
+        {podcasts ? (
           <>
-            {podcastsData.length > 0 ? (
-              <div className="podcast_grid">
-              {podcastsData?.map(({ _id, imageUrl, title, description }) => (
+            <div className="podcast_grid">
+              {podcasts.map((podcast) => (
                 <PodcastCard
-                  key={_id}
-                  id={_id.toString()}
-                  imgURL={imageUrl!}
-                  title={title}
-                  description={description}
+                  id={podcast._id}
+                  imgURL={podcast.imageUrl}
+                  title={podcast.title}
+                  description={podcast.description}
+                  key={podcast._id}
                 />
               ))}
             </div>
-            ) : <EmptyState title="No results found" />}
           </>
-        ) : <LoaderSpinner />}
+        ) : (
+          <EmptyState title="No results" />
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Discover
+export default Discover;
