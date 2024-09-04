@@ -19,7 +19,7 @@ export const sidebarLinks = [
   {
     imgURL: "/icons/pricing.svg",
     route: "/pricing",
-    label: "Pricing",
+    label: "Pricing [Not functional Yet]",
   },
 ];
 
