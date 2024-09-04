@@ -16,6 +16,45 @@ export const sidebarLinks = [
     route: "/create-podcast",
     label: "Create Podcast",
   },
+  {
+    imgURL: "/icons/pricing.svg",
+    route: "/pricing",
+    label: "Pricing",
+  },
+];
+
+export const pricingPlans = [
+  {
+    id: "free_plan",
+    name: "free",
+    description: "For individuals",
+    price: 0,
+    benefits: ["Unlimited listening", "10 rants per month (non OpenAI)"],
+  },
+  {
+    id: "plan_OrUYhPDCK9uoVI",
+    name: "Starter",
+    description: "For starters serious about rants.",
+    price: 99,
+    benefits: [
+      "Everything in free",
+      "60 rants per month",
+      "30 rants per month with OpenAI voices",
+      "Verified Creator Badge",
+    ],
+  },
+  {
+    id: "plan_OrUZPoFU37B6aU",
+    name: "Pro",
+    description: "For pro ranters.",
+    price: 149,
+    benefits: [
+      "Everything in free",
+      "60 rants per month",
+      "30 rants per month with OpenAI voices",
+      "Verified Creator Badge",
+    ],
+  },
 ];
 
 export const voiceDetails: VoiceType[] = [
@@ -25,9 +64,9 @@ export const voiceDetails: VoiceType[] = [
   },
   {
     provider: "Eleven Labs",
-    voices: ["Rachel", "Drew",],
+    voices: ["Rachel", "Drew"],
   },
-]
+];
 
 export const podcastData = [
   {
